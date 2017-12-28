@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 rel. 2 (http://www.altova.com) by MATT PHU (BANK OF THE WEST) -->
+<xs:schema xmlns:pty="http://www.botw.com/schemas/entity/party/v1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:altova="http://www.altova.com/xml-schema-extensions" targetNamespace="http://www.botw.com/schemas/entity/party/v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="Party" type="pty:Party_Type">
+		<xs:annotation>
+			<xs:documentation>Party entity global element</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="Party_Type">
+		<xs:annotation>
+			<xs:documentation>Party complex type</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="key" type="pty:Key_Type">
+				<xs:annotation>
+					<xs:documentation>Unique Party ID assigned by the Bank's MDM system.  This element is not sent in Add requests.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="partyTypeCd" type="pty:String14Min1_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Party Type</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="fullName" type="pty:String1000_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Party full name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="taxIdNum" type="pty:String9_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tax ID</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="taxIdNumTypeCd" type="pty:String100Min1_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tax ID Type</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="taxResidenceCountryCd" type="pty:Country_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="firstAcctOpenDt" type="xs:date" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date the customer opened its first account.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="custLifecycleStatCd" type="pty:String100_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Lifecycle status code assigned by Bank's MDM system</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="privateClientEffDt" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="consTurnoverAmt" type="xs:decimal" nillable="true" minOccurs="0"/>
+			<xs:element name="datValdnStatCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="cmphId" type="pty:String3_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="lckStatCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="mtchValdnStatCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="rltdPrtyLcyclStatCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="sourceCustomerTypeCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="segmentInfo" type="pty:ArraySegment_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Segment</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="relatedOrganizations" type="pty:ArrayOrgUnit_Type" minOccurs="0"/>
+			<xs:element name="externalReferences" type="pty:ArrayExternalReference_Type" minOccurs="0"/>
+			<xs:element name="privacyPreferences" type="pty:ArrayPrivacyPreference_Type" minOccurs="0"/>
+			<xs:element name="addresses" type="pty:ArrayAddress_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Physical addresses (ex: mailing address)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="electronicAddresses" type="pty:ArrayElectronicAddress_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Email and Phone information</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contacts" type="pty:ArrayContact_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Contact information</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="relatedParties" type="pty:ArrayPartyPartyRel_Type" minOccurs="0"/>
+			<xs:element name="relatedAccounts" type="pty:ArrayAccount_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Related accounts</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="firstName" type="pty:String100_Type" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Person first name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="middleName" type="pty:String100_Type" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Person middle name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="lastName" type="pty:String100_Type" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Person last name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nameSuffix" type="pty:String50_Type" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Name suffix (ex: Jr, III)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="birthDt" type="xs:date" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date of birth</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="gender" type="pty:String1_Type" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Gender.  Valid values are 'M' (Male), 'F" (Female) and 'U' (Unknown)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="residenceCountryCd" type="pty:Country_Type" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Country of residency</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nonresidentAlienStatus" type="pty:String100_Type" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Nonresident alien status</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="citizenshipCountries" type="pty:ArrayCountry_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Countries of citizenship</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="identificationDetail" minOccurs="0">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="pty:ArrayPartyIdentification_Type"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="legalName" type="pty:String500_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="legalTypeCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="busActvTpCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="incorpCountryCd" type="pty:Country_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="incorpStateCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="incorpDt" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="publicEntityFlag" type="xs:boolean" nillable="true" minOccurs="0"/>
+			<xs:element name="parentPublicEntityFlag" type="xs:boolean" nillable="true" minOccurs="0"/>
+			<xs:element name="securitiesInfo" type="pty:ArraySecurityInfo_Type" minOccurs="0"/>
+			<xs:element name="dbaNames" type="pty:ArrayDBA_Type" minOccurs="0"/>
+			<xs:element name="industryClassifCodes" type="pty:ArrayIndustryClassification_Type" minOccurs="0"/>
+			<xs:element name="registrationCountries" type="pty:ArrayCountry_Type" minOccurs="0"/>
+			<xs:element name="annualRevenueRangeCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="intermediaryLcyclStatCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ArrayParty_Type">
+		<xs:annotation>
+			<xs:documentation>Array of Party records</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="item" type="pty:Party_Type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PartyAcctRel_Type">
+		<xs:annotation>
+			<xs:documentation>Party to account relationship complex type</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="key" type="pty:Key_Type"/>
+			<xs:element name="acctId" type="pty:Id_Type"/>
+			<xs:element name="acctNum" type="pty:String100_Type" minOccurs="0"/>
+			<xs:element name="relationshipTypeCd" type="pty:String100_Type" minOccurs="0"/>
+			<xs:element name="relationshipSubTypeCd" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="Individual Account Relationship"/>
+						<xs:enumeration value="Organization Account Relationship"/>
+						<xs:enumeration value="Trust Account Relationship"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="relationshipStatCd" type="pty:String100_Type" minOccurs="0"/>
+			<xs:element name="terminationReasonCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="startDt" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="endDt" type="xs:date" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute ref="pty:deleteFlag"/>
+	</xs:complexType>
+	<xs:complexType name="Address_Type">
+		<xs:annotation>
+			<xs:documentation>Physical address</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="key" type="pty:Key_Type"/>
+			<xs:element name="mailScore" type="xs:int" nillable="true" minOccurs="0"/>
+			<xs:element name="validationStatus" type="pty:String250_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="addrTypeCd" type="pty:String100_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Address type</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="addrLine1" type="pty:String100_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Address line 1</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="addrLine2" type="pty:String50_Type" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Address line 2</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="addrLine3" type="pty:String50_Type" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Address line 3</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="addrLine4" type="pty:String50_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="city" type="pty:String50_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>City name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stateCd" type="pty:String100_Type" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>State or province</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="countryCd" type="pty:Country_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Country code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="postalCd" type="pty:String50_Type" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute ref="pty:deleteFlag"/>
+	</xs:complexType>
+	<xs:complexType name="ElectronicAddress_Type">
+		<xs:annotation>
+			<xs:documentation>Email and Phone information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="key" type="pty:Key_Type"/>
+			<xs:element name="elecAddrTypeCd" type="pty:String100_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Electronic address type</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="elecAddrText" type="pty:String1000_Type" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Email address or website URL</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phnNum" type="pty:String100_Type" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Phone number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phnNumExtn" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="phnAreaCd" type="pty:String100_Type" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Phone number area code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phnCntryCd" type="pty:String6_Type" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Phone number country code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute ref="pty:deleteFlag"/>
+	</xs:complexType>
+	<xs:complexType name="ExternalReference_Type">
+		<xs:annotation>
+			<xs:documentation>Source system IDs</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="key" type="pty:Key_Type"/>
+			<xs:element name="extId" type="pty:String100_Type" minOccurs="0"/>
+			<xs:element name="extRefTypeCd" type="pty:String100_Type" minOccurs="0"/>
+			<xs:element name="startDt" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="endDt" type="xs:date" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute ref="pty:deleteFlag"/>
+	</xs:complexType>
+	<xs:complexType name="IssuedIdent_Type">
+		<xs:annotation>
+			<xs:documentation>Identification information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="key" type="pty:Key_Type"/>
+			<xs:element name="primaryFlag" type="xs:boolean"/>
+			<xs:element name="partyIdTypeCd" type="pty:String100_Type" minOccurs="0"/>
+			<xs:element name="issueDt" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="extnlIdNum" type="pty:String100_Type" minOccurs="0"/>
+			<xs:element name="issCountryCd" type="pty:Country_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="issStateCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="expDt" type="xs:date" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute ref="pty:deleteFlag"/>
+	</xs:complexType>
+	<xs:complexType name="Contact_Type">
+		<xs:annotation>
+			<xs:documentation>Contact information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="key" type="pty:Key_Type"/>
+			<xs:element name="kycPrmyContactName" type="pty:String500_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="contactRole" type="pty:String100_Type" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute ref="pty:deleteFlag"/>
+	</xs:complexType>
+	<xs:complexType name="PrivacyPreference_Type">
+		<xs:annotation>
+			<xs:documentation>Fed and State marketing privacy elections</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="key" type="pty:Key_Type"/>
+			<xs:element name="prvcPrefTypeCd" type="pty:String100_Type" minOccurs="0"/>
+			<xs:element name="prvcPrefFlag" type="pty:String3_Type" minOccurs="0"/>
+			<xs:element name="startDt" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="endDt" type="xs:date" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute ref="pty:deleteFlag"/>
+	</xs:complexType>
+	<xs:complexType name="IndustryClassification_Type">
+		<xs:annotation>
+			<xs:documentation>Industry classification code</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="key" type="pty:Key_Type"/>
+			<xs:element name="industryClassTypeCd" type="pty:String100_Type" minOccurs="0"/>
+			<xs:element name="industryClassCd" type="pty:String100_Type"/>
+			<xs:element name="industryClassNum" type="xs:int" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute ref="pty:deleteFlag"/>
+	</xs:complexType>
+	<xs:complexType name="ArrayIndustryClassification_Type">
+		<xs:annotation>
+			<xs:documentation>List of industry classification codes</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="item" type="pty:IndustryClassification_Type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ArrayAddress_Type">
+		<xs:annotation>
+			<xs:documentation>List of physical addresses</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="item" type="pty:Address_Type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ArrayElectronicAddress_Type">
+		<xs:annotation>
+			<xs:documentation>List of electronic addresses</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="item" type="pty:ElectronicAddress_Type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ArrayExternalReference_Type">
+		<xs:annotation>
+			<xs:documentation>List of source system IDs</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="item" type="pty:ExternalReference_Type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ArrayContact_Type">
+		<xs:annotation>
+			<xs:documentation>List of contacts</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="item" type="pty:Contact_Type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ArrayCountry_Type">
+		<xs:annotation>
+			<xs:documentation>List of countries</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="item" type="pty:CountryCd_Type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ArrayPrivacyPreference_Type">
+		<xs:annotation>
+			<xs:documentation>List of privacy preferences</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="item" type="pty:PrivacyPreference_Type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ArraySegment_Type">
+		<xs:annotation>
+			<xs:documentation>List of segments</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="item" type="pty:Segment_Type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ArrayOrgUnit_Type">
+		<xs:annotation>
+			<xs:documentation>List of org unit info</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="item" type="pty:OrgUnit_Type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ArrayPartyIdentification_Type">
+		<xs:annotation>
+			<xs:documentation>List of government-issued identification</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="item" type="pty:IssuedIdent_Type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ArrayPartyPartyRel_Type">
+		<xs:annotation>
+			<xs:documentation>List of related party information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="item" type="pty:PartyPartyRel_Type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PartyPartyRel_Type">
+		<xs:annotation>
+			<xs:documentation>Related party information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="key" type="pty:Key_Type"/>
+			<xs:element name="relatedPartyId" type="pty:Id_Type"/>
+			<xs:element name="relationshipTypeCd" type="pty:String100_Type"/>
+			<xs:element name="relationshipSubTypeCd">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="Individual to Individual"/>
+						<xs:enumeration value="Individual to Organization"/>
+						<xs:enumeration value="Individual to Trust"/>
+						<xs:enumeration value="Organization to Organization"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="startDt" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="endDt" type="xs:date" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute ref="pty:deleteFlag"/>
+	</xs:complexType>
+	<xs:complexType name="OrgUnit_Type">
+		<xs:annotation>
+			<xs:documentation>Organization unit information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="key" type="pty:Key_Type"/>
+			<xs:element name="relatedOrgUnitTypeCd" type="pty:String100_Type" minOccurs="0"/>
+			<xs:element name="entityId" type="pty:String100_Type" minOccurs="0"/>
+			<xs:element name="entityName" type="pty:String100_Type" minOccurs="0"/>
+			<xs:element name="lobId" type="pty:String100_Type" minOccurs="0"/>
+			<xs:element name="lobDesc" type="pty:String250_Type" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Line of Business.  Ex: WMG, CBG, CBD</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="costCenterCd" type="pty:String100_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>BOTW Cost Center</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="costCenterDesc" type="pty:String250_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="relationshipMgrName" type="pty:String500_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="relationshipMgrId" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="startDt" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="endDt" type="xs:date" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute ref="pty:deleteFlag"/>
+	</xs:complexType>
+	<xs:complexType name="ArrayAccount_Type">
+		<xs:sequence>
+			<xs:element name="item" type="pty:PartyAcctRel_Type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Segment_Type">
+		<xs:annotation>
+			<xs:documentation>Segment information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="key" type="pty:Key_Type"/>
+			<xs:element name="segmentTypeCd" type="pty:String100_Type" minOccurs="0"/>
+			<xs:element name="startDt" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="endDt" type="xs:date" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute ref="pty:deleteFlag"/>
+	</xs:complexType>
+	<xs:complexType name="ArrayDBA_Type">
+		<xs:sequence>
+			<xs:element name="item" type="pty:DBA_Type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ArraySecurityInfo_Type">
+		<xs:sequence>
+			<xs:element name="item" type="pty:PubliclyTradedSecurity_Type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DBA_Type">
+		<xs:sequence>
+			<xs:element name="key" type="pty:Key_Type"/>
+			<xs:element name="dbaName" type="pty:String100_Type" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute ref="pty:deleteFlag"/>
+	</xs:complexType>
+	<xs:complexType name="PubliclyTradedSecurity_Type">
+		<xs:sequence>
+			<xs:element name="key" type="pty:Key_Type"/>
+			<xs:element name="securityTypeCd" type="pty:String100_Type" minOccurs="0"/>
+			<xs:element name="stockCd" type="pty:String100_Type" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute ref="pty:deleteFlag"/>
+	</xs:complexType>
+	<xs:complexType name="CountryCd_Type">
+		<xs:sequence>
+			<xs:element name="key" type="pty:Key_Type"/>
+			<xs:element name="countryCd">
+				<xs:simpleType>
+					<xs:restriction base="pty:Country_Type"/>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute ref="pty:deleteFlag"/>
+	</xs:complexType>
+	<xs:simpleType name="Id_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="14"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="Key_Type">
+		<xs:sequence>
+			<xs:element name="id" type="pty:Id_Type" minOccurs="0"/>
+			<xs:element name="sourceKey" type="pty:String100_Type" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="Country_Type">
+		<xs:annotation>
+			<xs:documentation>Country simple type (use ISO-3166 2-char country code).  If country not known then 'UNK' is a valid value</xs:documentation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="US"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String1_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String3_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String6_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="6"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String9_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="9"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String14_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="14"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String14Min1_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="14"/>
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String20_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String50_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String50Min1_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String100_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String100Min1_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String250_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="250"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String255_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String500_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="500"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String500Min1_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="500"/>
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String1000_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:attribute name="deleteFlag" type="xs:boolean"/>
+</xs:schema>

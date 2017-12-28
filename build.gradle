@@ -1,0 +1,136 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.2.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+
+    configurations {
+        compile.exclude module: 'slf4j-log4j12'
+        all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    }
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = 'kyc-spark-cache'
+	version = '0.0.1-SNAPSHOT'
+}
+//kycInfoSpark
+
+springBoot {
+    mainClass = 'com.cit.kyc.cache.KycSparkCacheApp'
+    executable = true
+    buildInfo()
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://plugins.gradle.org/m2/" }
+}
+
+configurations {
+    jaxb
+}
+task genJaxb {
+    ext.sourcesDir = "${buildDir}/generated-sources/jaxb"
+    ext.classesDir = "${buildDir}/classes/jaxb"
+    ext.schema = "src/main/resources/schema"
+
+    doLast() {
+        project.ant {
+            taskdef name: "xjc", classname: "com.sun.tools.xjc.XJC2Task",
+                    classpath: configurations.jaxb.asPath
+            mkdir(dir: sourcesDir)
+            mkdir(dir: classesDir)
+
+            xjc(destdir: sourcesDir) {
+                schema(dir: schema, includes: "**/partyPublish.xsd")
+                arg(value: "-XautoNameResolution")
+                arg(value: "-extension")
+                binding(dir:'src/main/resources/schema/', includes:'*.xjb')
+                produces(dir: sourcesDir, includes: "**/*.java")
+            }
+
+            javac(destdir: classesDir, source: 1.8, target: 1.8, debug: true,
+                    debugLevel: "lines,vars,source",
+                    classpath: configurations.jaxb.asPath) {
+                src(path: sourcesDir)
+                include(name: "**/*.java")
+                include(name: "*.java")
+            }
+
+            copy(todir: classesDir) {
+                fileset(dir: sourcesDir, erroronmissingdir: false) {
+                    exclude(name: "**/*.java")
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-web') {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+    compile("org.springframework.boot:spring-boot-starter-jetty")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("mysql:mysql-connector-java:6.0.5")
+    compile("org.codehaus.janino:janino:3.0.6")
+    compile("org.apache.spark:spark-core_2.11:2.2.0")
+            {
+                exclude group: "org.slf4j", module: "slf4j-log4j12"
+            }
+    compile("org.apache.spark:spark-sql_2.11:2.2.0")
+            {
+                exclude group: "org.slf4j", module: "slf4j-log4j12"
+            }
+    compile 'org.apache.spark:spark-hive_2.11:2.2.0'
+    compile "com.oracle:ojdbc7:12.1.0.1.0"
+    compile 'com.denodo:denodo-vdp-jdbcdriver:6.0.3'
+    compile 'org.apache.hadoop:hadoop-client'
+   // https://mvnrepository.com/artifact/com.ibm/com.ibm.mqjms
+    compile 'com.ibm:com.ibm.mq.allclient:8.0.0.0' //com.ibm.mq.allclient jar
+    compile "org.springframework:spring-jms:4.3.8.RELEASE"
+    compile  'javax.jms:javax.jms-api:+' //2.0
+
+
+    compile group: 'com.sun.xml.bind', name:'jaxb-xjc', version:'2.2.6'
+    compile group: 'com.sun.xml.bind', name: 'jaxb-impl', version: '2.2.6'
+
+    // https://mvnrepository.com/artifact/org.springframework/spring-oxm
+    compile group: 'org.springframework', name: 'spring-oxm', version: '3.0.0.RELEASE'
+
+
+
+    jaxb("org.glassfish.jaxb:jaxb-xjc:2.2.11")
+    compile(files(genJaxb.classesDir).builtBy(genJaxb))
+
+
+    // https://mvnrepository.com/artifact/org.springframework.integration/spring-integration-core
+    compile group: 'org.springframework.integration', name: 'spring-integration-core', version: '4.2.0.RELEASE'
+
+
+
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("junit:junit")
+}
+
+jar {
+    baseName = 'party-publish-msg'
+    version =  '0.1.0'
+    from genJaxb.classesDir
+}
