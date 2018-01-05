@@ -1,5 +1,6 @@
 package com.cit.kyc.cache.service;
 
+import com.cit.kyc.cache.models.KycInfoRecord;
 import com.cit.kyc.cache.repository.KYCRecordRepository;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
@@ -34,7 +35,7 @@ public class KYCInfoCacheLoader {
             if (cacheDF!=null){
                 System.out.println("Serving from Cache.");
                 long t1 = System.currentTimeMillis();
-                cacheDF.write().json("RDC_INQUIRY");
+             //   cacheDF.write().json("RDC_INQUIRY");
                 long t2 = System.currentTimeMillis();
                 System.out.println("Time consumed in loading and writing to file from Cache: " + (t2 - t1) + " Cache count: " + cacheDF.cache().count());
                 resp.append("Time consumed in loading and writing to file from Cache: ");
@@ -47,7 +48,7 @@ public class KYCInfoCacheLoader {
                 System.out.println("Cache is null..Now loading it.");
                 Map<String, String> jdbcOptions = new HashMap<String, String>();
                 jdbcOptions.put("url", "jdbc:oracle:thin:scott/scott@localhost:1521:orcl");
-                jdbcOptions.put("dbtable", "(select * from SCOTT.RDC_INQUIRY )"); //"(WHERE rownum<201) as t"
+                jdbcOptions.put("dbtable", "( select * from SCOTT.RDC_INQUIRY )"); //"(WHERE rownum<201) as t"
                 //jdbcOptions.put("fetchSize", "250");
                 // jdbcOptions.put("user", "scott");
                 //  jdbcOptions.put("password", "scott");
@@ -56,8 +57,23 @@ public class KYCInfoCacheLoader {
                 cacheDF = kycInfoDataFrame;
                 System.out.println("KYC INFO data set loaded.");
                 cacheDF.printSchema();
+
                 cacheDF.cache();
-                cacheDF.write().json("RDC_INQUIRY");
+             //   cacheDF.write().json("RDC_INQUIRY"); partyDF.createOrReplaceTempView("PARTY");
+             //   session.sql("SELECT * FROM PARTY").toLocalIterator().next();
+                cacheDF.alias("sample").select("*")//("TRACKING_ID", "CUSTOMER_TYPE", "CUSTOMER_NAME", "REVIEW_STATUS")
+                        .foreach((Row row) -> {
+                    System.out.println("ID_TYPE: " + row.getAs("ID_TYPE")+", TRACKING_ID: " + row.getAs("TRACKING_ID")
+                    +", CUSTOMER_TYPE: "+
+                            row.getAs("CUSTOMER_TYPE")+ ", CUSTOMER_NAME: "+
+                            row.getAs("CUSTOMER_NAME")+ ", REVIEW_STATUS: "+
+                            row.getAs("REVIEW_STATUS"));
+
+                          //  resp.append(row.toString());
+                });
+
+
+
                 long t2 = System.currentTimeMillis();
                 resp.append("Time consumed in loading and writing to file: ");
                 resp.append((t2 - t1));
@@ -69,6 +85,7 @@ public class KYCInfoCacheLoader {
             }
         } catch (Exception e) {
             System.out.println("Error while loading from DB: "+ e.getMessage());
+            e.printStackTrace();
             resp.append(e);
             System.out.println("Error while loading from DB: "+ e);
         }
