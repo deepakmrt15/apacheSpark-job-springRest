@@ -6,12 +6,13 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by sharmd01 on 12/28/2017.
  */
 
-@Configuration
+@Service
 public class DFCreator {
 
    // @Autowired
@@ -26,8 +27,26 @@ public class DFCreator {
     private String URL ="jdbc:vdb://q53dnoapp001t0x:9999/qmdm_kyc?user=sv_kyc_app&password=App123!@";
     private String DRIVER ="com.denodo.vdp.jdbc.Driver";
 
+    private String LocalURL ="jdbc:oracle:thin:scott/scott@localhost:1521:orcl";
+   // private String LocalDRIVER ="com.denodo.vdp.jdbc.Driver";
+
     @Autowired
     private KYCRecordRepository kycRecordRepository;
+
+    public static Dataset<Row> cachePartyDF=null;
+    public static Dataset<Row> cacheRelPartyDF=null;
+    public static Dataset<Row> cachePartyAddressDF=null;
+    public static Dataset<Row> cacheOrgDF=null;
+
+    public static Dataset<Row> cacheClassificDF=null; //
+    public static Dataset<Row> cacheCountriesDF=null;
+    public static Dataset<Row> cacheScreeningInfoDF=null;
+
+  //  public static Dataset<Row> cacheClassifDF=null;
+   // public static Dataset<Row> cacheorgDF=null;
+   // public static Dataset<Row> cacheClassifDF=null;
+   // public static Dataset<Row> cacheClassifDF=null;
+
 
 
     public Dataset <Row> partyDF(SparkSession session)  {
@@ -35,55 +54,68 @@ public class DFCreator {
         StringBuffer resp = new StringBuffer();
 
         try {
+            if (cachePartyDF!=null){
+                System.out.println("Party--Serving from Cache. Cache Count is: "+cachePartyDF.count());
+                return cachePartyDF;
 
-                System.out.println(" DataFrame loaded from the entire contents of a table.");
-              //  long t1 = System.currentTimeMillis();
-                 partyDF = session.read().format("jdbc")
-                        .option("url",URL )
+            }else {
+                //  System.out.println(" DataFrame loaded from the entire contents of a table.");
+                long t1 = System.currentTimeMillis();
+                System.out.println("Party View DB operation starting...");
+                 session.read().format("jdbc")
+                        .option("url", URL)
                         .option("driver", DRIVER)
-                        //.option("fetchSize", 500)
-                        .option("dbtable", "iv_score_prty")
-                        .load();
-                      partyDF.printSchema();
-            partyDF  =    partyDF.cache();
-            System.out.println(" Party data loaded from iv_score_prty.");
-           // long t2 = System.currentTimeMillis();
-            partyDF.show();
-            //    System.out.println("Time consumed in loading: " + (t2 - t1) + "count: " + cacheDF.count());
-                return partyDF;
-
+                        .option("dbtable", "iv_c_prty") //iv_c_prty
+                        .load().createTempView("party");//.limit(100);
+                partyDF = session.sql(" select * from party ");
+                cachePartyDF = partyDF.cache();
+            //    cachePartyDF =cachePartyDF.orderBy("rowid_object");
+                System.out.println(" Party data loaded from iv_c_prty. Cache also loaded. "+cachePartyDF.count());
+                long t2 = System.currentTimeMillis();
+                //   partyDF.show();
+                System.out.println("Time consumed in loading: " + (t2 - t1) + ". Row count: " + cachePartyDF.count());
+                return cachePartyDF;
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return partyDF;
+        return cachePartyDF;
     }
 
     /**
      * 2. Load the Related Party data from Denodo
      * */
-    public Dataset <Row> relatedPartyDF(SparkSession session)  {
-        Dataset<Row> relPartyDf =null;
+    public Dataset <Row> relatedPartyDF(SparkSession session) {
+        Dataset<Row> relPartyDf = null;
         StringBuffer resp = new StringBuffer();
-        try {
-          //  long t1 = System.currentTimeMillis();
-               relPartyDf = session.read().format("jdbc")
-                        .option("url",URL )
-                        .option("driver", DRIVER)
-                        .option("dbtable", "iv_score_prty_rltd_prty")
-                        .load();
-            System.out.println(" Realted Party data loaded from iv_score_prty_rltd_prty");
-                relPartyDf.printSchema();
-           //    long t2 = System.currentTimeMillis();
-            relPartyDf.show();
-              //  System.out.println("Time consumed in loading Realted Party: " + cacheDF.count() + " Rows: " + (t2 - t1));
-                return relPartyDf;
+            try {
+                if (cacheRelPartyDF != null) {
+                    System.out.println("Related Party--Serving from Cache. Cache Count is: " + cacheRelPartyDF.count());
+                    return cacheRelPartyDF;
 
-        } catch (Exception e) {
-            e.printStackTrace();
+                } else {
+                    System.out.println(" Related Party View DB operation starting...");
+                    long t1 = System.currentTimeMillis();
+                    session.read().format("jdbc")
+                            .option("url", URL)
+                            .option("driver", DRIVER)
+                            .option("dbtable", "iv_c_prty_rltd_prty")
+                            .load().createTempView("relatedParty");
+
+                    relPartyDf = session.sql(" select * from relatedParty ");
+                    long t2 = System.currentTimeMillis();
+                    cacheRelPartyDF = relPartyDf.cache();
+                  //  cacheRelPartyDF = cacheRelPartyDF.orderBy("rltd_prty_id");
+                    // relPartyDf.show();
+                    System.out.println("Time consumed in loading Realted Party: " + (t2 - t1) + ". Row Count: " + cacheRelPartyDF.count());                    //return cacheRelPartyDF;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return cacheRelPartyDF;
         }
-        return relPartyDf;
-    }
+
 
     /**
      * 3. Load the Party address data from Denodo
@@ -92,23 +124,28 @@ public class DFCreator {
         Dataset<Row> partyAddressDF =null;
          StringBuffer resp = new StringBuffer();
         try {
-            //  long t1 = System.currentTimeMillis();
-            partyAddressDF = session.read().format("jdbc")
-                    .option("url",URL )
+            if (cachePartyAddressDF != null) {
+                System.out.println("Party Addresses --Serving from Cache. Cache Count is: " + cachePartyAddressDF.count());
+                return cachePartyAddressDF;
+
+            } else {
+                System.out.println(" Party Addresses View DB operation starting...");
+             long t1 = System.currentTimeMillis();
+            session.read().format("jdbc")
+                    .option("url", URL)
                     .option("driver", DRIVER)
                     .option("dbtable", "iv_c_prty_addr")
-                    .load();
-            System.out.println("  Party Address data loaded from iv_c_prty_addr");
-            partyAddressDF.printSchema();
-            //    long t2 = System.currentTimeMillis();
-            partyAddressDF.show();
-            //  System.out.println("Time consumed in loading Realted Party: " + cacheDF.count() + " Rows: " + (t2 - t1));
-            return partyAddressDF;
-
+                    .load().createTempView("partyAddress");
+                partyAddressDF  = session.sql(" select * from partyAddress ");
+                long t2 = System.currentTimeMillis();
+                cachePartyAddressDF = partyAddressDF.cache();
+             System.out.println("Time consumed in loading Party Addresses: " + cachePartyAddressDF.count() + " Rows: " + (t2 - t1));
+            return cachePartyAddressDF;
+        }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return partyAddressDF;
+        return cachePartyAddressDF;
     }
 
     /**
@@ -119,23 +156,31 @@ public class DFCreator {
 
         StringBuffer resp = new StringBuffer();
         try {
-            //  long t1 = System.currentTimeMillis();
-            orgDF = session.read().format("jdbc")
-                    .option("url",URL )
+            if (cacheOrgDF != null) {
+                System.out.println("Party Org data --Serving from Cache. Cache Count is: " + cacheOrgDF.count());
+                return cacheOrgDF;
+
+            } else {
+                System.out.println(" Party Org View DB operation starting...");
+                long t1 = System.currentTimeMillis();
+                 session.read().format("jdbc")
+                    .option("url", URL)
                     .option("driver", DRIVER)
                     .option("dbtable", "iv_c_prty_rltd_org")
-                    .load();
-            System.out.println("  Party Address data loaded from iv_c_prty_rltd_org");
-            orgDF.printSchema();
-            //    long t2 = System.currentTimeMillis();
-            orgDF.show();
-            //  System.out.println("Time consumed in loading Realted Party: " + cacheDF.count() + " Rows: " + (t2 - t1));
-            return orgDF;
+                    .load().createTempView("partyRelatedOrg");
 
+                orgDF  = session.sql(" select * from partyRelatedOrg ");
+                long t2 = System.currentTimeMillis();
+                cacheOrgDF = orgDF.cache();
+
+            System.out.println("  Party org data loaded from iv_c_prty_rltd_org");
+           System.out.println("Time consumed in loading Party Org: " + cacheOrgDF.count() + " Rows.- " + (t2 - t1));
+            return cacheOrgDF;
+        }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return orgDF;
+        return cacheOrgDF;
     }
 
     /**
@@ -143,26 +188,32 @@ public class DFCreator {
      * */
     public Dataset <Row> classifDF(SparkSession session)  {
         Dataset<Row> classifDF =null;
-
         StringBuffer resp = new StringBuffer();
         try {
-            //  long t1 = System.currentTimeMillis();
-            classifDF = session.read().format("jdbc")
-                    .option("url",URL )
+            if (cacheClassificDF != null) {
+                System.out.println("Party Classification data --Serving from Cache. Cache Count is: " + cacheClassificDF.count());
+                return cacheClassificDF;
+
+            } else {
+                System.out.println(" Party Classification View DB operation starting...");
+                long t1 = System.currentTimeMillis();
+               session.read().format("jdbc")
+                    .option("url", URL)
                     .option("driver", DRIVER)
                     .option("dbtable", "iv_c_prty_inds_clsf")
-                    .load();
-            System.out.println("Party Address data loaded from iv_c_prty_inds_clsf");
-            classifDF.printSchema();
-            //    long t2 = System.currentTimeMillis();
-            classifDF.show();
-            //  System.out.println("Time consumed in loading Realted Party: " + cacheDF.count() + " Rows: " + (t2 - t1));
-            return classifDF;
+                    .load().createTempView("partyClassification");
 
+                classifDF = session.sql(" select * from partyClassification ");
+                long t2 = System.currentTimeMillis();
+                cacheClassificDF = classifDF.cache();
+            System.out.println("Party Classification data loaded from iv_c_prty_inds_clsf");
+            System.out.println("Time consumed in loading Party Classification: " + cacheClassificDF.count() + " Rows: " + (t2 - t1));
+            return cacheClassificDF;
+        }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return classifDF;
+        return cacheClassificDF;
     }
 
 
@@ -174,48 +225,61 @@ public class DFCreator {
 
         StringBuffer resp = new StringBuffer();
         try {
-            //  long t1 = System.currentTimeMillis();
-            countriesDF = session.read().format("jdbc")
-                    .option("url",URL )
+            if (cacheCountriesDF != null) {
+             System.out.println("Party Countries data --Serving from Cache. Cache Count is: " + cacheCountriesDF.count());
+             return cacheCountriesDF;
+
+              } else {
+            System.out.println(" Party Countries View DB operation starting...");
+            long t1 = System.currentTimeMillis();
+             session.read().format("jdbc")
+                    .option("url", URL)
                     .option("driver", DRIVER)
                     .option("dbtable", "iv_c_prty_ctzshp_cntry")
-                    .load();
-            System.out.println("Party Address data loaded from iv_c_prty_ctzshp_cntry");
-            countriesDF.printSchema();
-            //    long t2 = System.currentTimeMillis();
-            countriesDF.show();
-            //  System.out.println("Time consumed in loading Realted Party: " + cacheDF.count() + " Rows: " + (t2 - t1));
-            return countriesDF;
+                    .load().createTempView("partyCountries");
 
-        } catch (Exception e) {
+            countriesDF = session.sql(" select * from partyCountries ");
+           cacheCountriesDF = countriesDF.cache();
+            long t2 = System.currentTimeMillis();
+            System.out.println("Party Countries data loaded from iv_c_prty_ctzshp_cntry");
+           System.out.println("Time consumed in loading Countries Party: " + cacheCountriesDF.count() + " Rows: " + (t2 - t1));
+            return cacheCountriesDF;
+          }
+         } catch (Exception e) {
             e.printStackTrace();
         }
-        return countriesDF;
+        return cacheCountriesDF;
     }
 
 
     /**
-     * 7. Load the screeningInfo data from Denodo
+     * 7. Load the screeningInfo data from Denodo countriesDF screeningInfoDF
      * */
     public Dataset <Row> screeningInfoDF(SparkSession session)  {
         Dataset<Row> screeningInfoDF =null;
          try {
-            //  long t1 = System.currentTimeMillis();
-            screeningInfoDF = session.read().format("jdbc")
-                    .option("url",URL )
-                    .option("driver", DRIVER)
-                    .option("dbtable", "dv_prty_adv_pep_san")
-                    .load();
-            System.out.println("Party Address data loaded from dv_prty_adv_pep_san");
-            screeningInfoDF.printSchema();
-            //    long t2 = System.currentTimeMillis();
-            screeningInfoDF.show();
-            //  System.out.println("Time consumed in loading Realted Party: " + cacheDF.count() + " Rows: " + (t2 - t1));
-            return screeningInfoDF;
+             if (cacheScreeningInfoDF != null) {
+                 System.out.println("Party Screening data --Serving from Cache. Cache Count is: " + cacheScreeningInfoDF.count());
+                 return cacheScreeningInfoDF;
 
+             } else {
+                 System.out.println(" Party Screening View DB operation starting...");
+                 long t1 = System.currentTimeMillis();
+             session.read().format("jdbc")
+                     .option("url", URL)
+                     .option("driver", DRIVER)
+                     .option("dbtable", "dv_prty_adv_pep_san")
+                     .load().createTempView("partyScreeningInfo");
+                 screeningInfoDF = session.sql(" select * from partyScreeningInfo ");
+                 cacheScreeningInfoDF = screeningInfoDF.cache();
+                 long t2 = System.currentTimeMillis();
+               System.out.println("Party Address data loaded from dv_prty_adv_pep_san");
+              System.out.println("Time consumed in loading Party Screening: " + cacheScreeningInfoDF.count() + " Rows: " + (t2 - t1));
+             return cacheScreeningInfoDF;
+         }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return screeningInfoDF;
+        return cacheScreeningInfoDF;
     }
 }
