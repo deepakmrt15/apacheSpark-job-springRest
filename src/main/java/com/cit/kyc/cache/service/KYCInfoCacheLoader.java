@@ -20,6 +20,7 @@ import java.util.Properties;
  * Created by sharmd01 on 12/13/2017.
  */
 @Service
+
 public class KYCInfoCacheLoader {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -61,9 +62,11 @@ public class KYCInfoCacheLoader {
                 cacheDF.cache();
              //   cacheDF.write().json("RDC_INQUIRY"); partyDF.createOrReplaceTempView("PARTY");
              //   session.sql("SELECT * FROM PARTY").toLocalIterator().next();
-                cacheDF.alias("sample").select("*")//("TRACKING_ID", "CUSTOMER_TYPE", "CUSTOMER_NAME", "REVIEW_STATUS")
+
+                cacheDF.select("*")//("TRACKING_ID", "CUSTOMER_TYPE", "CUSTOMER_NAME", "REVIEW_STATUS")
                         .foreach((Row row) -> {
-                    System.out.println("ID_TYPE: " + row.getAs("ID_TYPE")+", TRACKING_ID: " + row.getAs("TRACKING_ID")
+
+                            System.out.println("ID_TYPE: " + row.getAs("ID_TYPE")+", TRACKING_ID: " + row.getAs("TRACKING_ID")
                     +", CUSTOMER_TYPE: "+
                             row.getAs("CUSTOMER_TYPE")+ ", CUSTOMER_NAME: "+
                             row.getAs("CUSTOMER_NAME")+ ", REVIEW_STATUS: "+
