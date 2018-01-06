@@ -65,14 +65,14 @@ public class DFCreator {
                  session.read().format("jdbc")
                         .option("url", URL)
                         .option("driver", DRIVER)
-                        .option("dbtable", "iv_c_prty") //iv_c_prty
-                        .load().createTempView("party");//.limit(100);
+                        .option("dbtable", "iv_c_prty")
+                        .load().createTempView("party");
                 partyDF = session.sql(" select * from party ");
                 cachePartyDF = partyDF.cache();
-            //    cachePartyDF =cachePartyDF.orderBy("rowid_object");
+
                 System.out.println(" Party data loaded from iv_c_prty. Cache also loaded. "+cachePartyDF.count());
                 long t2 = System.currentTimeMillis();
-                //   partyDF.show();
+
                 System.out.println("Time consumed in loading: " + (t2 - t1) + ". Row count: " + cachePartyDF.count());
                 return cachePartyDF;
             }
@@ -260,26 +260,62 @@ public class DFCreator {
          try {
              if (cacheScreeningInfoDF != null) {
                  System.out.println("Party Screening data --Serving from Cache. Cache Count is: " + cacheScreeningInfoDF.count());
-                 return cacheScreeningInfoDF;
+              //   return cacheScreeningInfoDF;
 
              } else {
                  System.out.println(" Party Screening View DB operation starting...");
                  long t1 = System.currentTimeMillis();
-             session.read().format("jdbc")
-                     .option("url", URL)
-                     .option("driver", DRIVER)
-                     .option("dbtable", "dv_prty_adv_pep_san")
-                     .load().createTempView("partyScreeningInfo");
+                 session.read().format("jdbc")
+                        .option("url", URL)
+                        .option("driver", DRIVER)
+                        .option("dbtable", "dv_prty_adv_pep_san")
+                        .load().createTempView("partyScreeningInfo");
                  screeningInfoDF = session.sql(" select * from partyScreeningInfo ");
                  cacheScreeningInfoDF = screeningInfoDF.cache();
-                 long t2 = System.currentTimeMillis();
-               System.out.println("Party Address data loaded from dv_prty_adv_pep_san");
-              System.out.println("Time consumed in loading Party Screening: " + cacheScreeningInfoDF.count() + " Rows: " + (t2 - t1));
-             return cacheScreeningInfoDF;
+                 long t2 = System.currentTimeMillis();//dv_prty_adv_pep_san
+                 System.out.println("Party Address data loaded from dv_prty_adv_pep_san");
+                 System.out.println("Time consumed in loading Party Screening: " + cacheScreeningInfoDF.count() + " Rows: " + (t2 - t1));
+           //  return cacheScreeningInfoDF;
          }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return cacheScreeningInfoDF;
     }
+
+
+    /**
+     * 7. Load the screeningInfo data from Denodo countriesDF screeningInfoDF
+     * */
+    public Dataset <Row> basicDF(SparkSession session, boolean toUpdate)  {
+        Dataset<Row> screeningInfoDF =null;
+        try {
+
+            if (toUpdate==false){}{}
+            if (cacheScreeningInfoDF != null) {
+                System.out.println("Party Screening data --Serving from Cache. Cache Count is: " + cacheScreeningInfoDF.count());
+                //   return cacheScreeningInfoDF;
+
+            } else {
+                System.out.println(" Party Screening View DB operation starting...");
+                long t1 = System.currentTimeMillis();
+                session.read().format("jdbc")
+                        .option("url", URL)
+                        .option("driver", DRIVER)
+                        .option("dbtable", "dv_prty_adv_pep_san")
+                        .load().createTempView("partyScreeningInfo");
+                screeningInfoDF = session.sql(" select * from partyScreeningInfo ");
+                cacheScreeningInfoDF = screeningInfoDF.cache();
+                long t2 = System.currentTimeMillis();
+                System.out.println("Party Address data loaded from dv_prty_adv_pep_san");
+                System.out.println("Time consumed in loading Party Screening: " + cacheScreeningInfoDF.count() + " Rows: " + (t2 - t1));
+                //  return cacheScreeningInfoDF;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cacheScreeningInfoDF;
+    }
+
+
 }
