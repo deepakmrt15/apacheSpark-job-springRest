@@ -5,6 +5,8 @@ import com.botw.schemas.entity.party.v1.Party;
 import com.botw.schemas.publish.party.v1.PartyEvent;
 import com.ibm.mq.jms.MQQueueConnectionFactory;
 
+import com.ibm.msg.client.wmq.WMQConstants;
+import com.ibm.msg.client.wmq.compat.jms.internal.JMSC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +24,7 @@ import org.springframework.jms.support.converter.MarshallingMessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
+import javax.jms.Destination;
 import java.io.StringReader;
 
 /**
@@ -34,19 +37,22 @@ public class MdmMqConfigurer {
     @Value("tcp://localhost:61616")
     /** This method configures the connection to the MDM queue
      **/
-    @Autowired
-    JmsTemplate jmsTemplate;
-    @Bean
-    @Primary
+   // @Autowired
+   // JmsTemplate jmsTemplate;
+   // @Bean
+  //  @Primary
         public MQQueueConnectionFactory mdmMQCnxnFactory() {
         MQQueueConnectionFactory mdmMQConnectionFactory = new MQQueueConnectionFactory();
         try{
-        mdmMQConnectionFactory.createConnection("","");
-        mdmMQConnectionFactory.setHostName("");
-        mdmMQConnectionFactory.setClientID("clientId");
-        mdmMQConnectionFactory.setPort(7077);
+//       mdmMQConnectionFactory.createConnection("","");
+        mdmMQConnectionFactory.setHostName("localhost");
+      //  mdmMQConnectionFactory.setClientID("clientId");
+        mdmMQConnectionFactory.setPort(1414);
+            mdmMQConnectionFactory.setQueueManager("local");
+            mdmMQConnectionFactory.setChannel("lCH");
         mdmMQConnectionFactory.setSSLCertStores("");
-        mdmMQConnectionFactory.setTransportType(1);
+       mdmMQConnectionFactory.setTransportType(JMSC.MQJMS_TP_CLIENT_MQ_TCPIP);
+
     } catch (Exception e) {
         e.printStackTrace();
     }
@@ -55,44 +61,18 @@ public class MdmMqConfigurer {
 
 
 
-    @Bean
+ //@Bean
     public DefaultMessageListenerContainer jmsListenerContainerFactory() {
         DefaultMessageListenerContainer listenerContainer = new DefaultMessageListenerContainer();
         listenerContainer.setConnectionFactory(mdmMQCnxnFactory());
-        listenerContainer.setMessageConverter(messageConverter());
+     listenerContainer.setDestinationName("");
+
 
         return listenerContainer;
     }
 
 
-    @Bean
-    MessageConverter messageConverter() {
-        MarshallingMessageConverter converter = new MarshallingMessageConverter();
-        converter.setMarshaller( marshaller());
-        converter.setUnmarshaller(unMarshaller());
 
-        // set this converter on the implicit Spring JMS template
-       // jmsTemplate.setMessageConverter(converter);
-        return converter;
-    }
-
-    @Bean
-    Jaxb2Marshaller marshaller() {
-        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        //(new Class[]{twitter.model.Statuses.class});
-       marshaller.setClassesToBeBound(new Class[]{PartyEvent.class, Party.class} );
-        return marshaller;
-
-    }
-
-    @Bean
-    Jaxb2Marshaller unMarshaller() {
-        Jaxb2Marshaller unMarshaller = new Jaxb2Marshaller();
-       // unMarshaller.unmarshal(new StringReader("string"));
-
-        return unMarshaller;
-
-    }
 
 }
 
