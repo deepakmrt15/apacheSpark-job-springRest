@@ -1,16 +1,14 @@
 package com.cit.kyc.cache.controllers;
 
-import com.cit.kyc.cache.models.KycInfoRecord;
+import com.cit.kyc.cache.extractors.*;
 import com.cit.kyc.cache.repository.KYCRecordRepository;
-import com.cit.kyc.cache.service.DataLoader;
-import com.cit.kyc.cache.service.KYCInfoCacheLoader;
+import com.cit.kyc.cache.service.*;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.SparkSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,6 +29,35 @@ public class KycInfoController {
 
     @Autowired
     private KYCInfoCacheLoader kycInfoCacheLoader;
+
+    @Autowired
+    DFCreator cacheBuilder;
+
+    @Autowired
+    CachingWrapper cachingWrapper;
+
+    @Autowired
+    DFJoiner dfJoiner;
+@Autowired
+AddressExtractor addr;
+
+    @Autowired
+    KyaPropertiesExtractor kyaPrp;
+
+    @Autowired
+    RelatedOrgExtractor rltdOrg; //ScreenInfoExtractor screenExtrctr
+
+    @Autowired
+    PartyMapExtractor partyMap;
+
+    @Autowired
+     ScreenInfoExtractor screenExtrctr ;
+
+    @Autowired
+    RelatedPartyExtractor rltdPartyExtctr ;
+
+    @Autowired
+    CitizenshipCountryExtractor ctznExtctr ; //CitizenshipCountryExtractor
 
     @RequestMapping("/")
     public String index() {
@@ -53,10 +80,31 @@ public class KycInfoController {
 
     @RequestMapping(method=RequestMethod.GET, path = "/kyc/spark/testCache")
     public String testCache() {
+        IndustryClassifExtractor indsEx = new IndustryClassifExtractor();
+        StringBuffer finalCount = new StringBuffer();
         String rtnCnt = new String();
       //  rtnCnt= kycInfoCacheLoader.loadKycInfoDataFrame(getOrCreateSparkSession());
-        rtnCnt= kycInfoCacheLoader.denodoLoader(getOrCreateSparkSession());
-        rtnCnt ="KYC data loaded." + "\n"+ rtnCnt;
+        // rtnCnt= kycInfoCacheLoader.denodoLoader(getOrCreateSparkSession());
+
+        long partyInfoCnt = partyMap.getPartyInfo(getOrCreateSparkSession()).size();
+        long rltdPartyCnt= rltdPartyExtctr.getRelatedPartyToParty(getOrCreateSparkSession()).size();
+      // rtnCnt=cachingWrapper.getPartyKyaProperties(getOrCreateSparkSession());
+        long partyAddressCnt = addr.getPartyAddresses(getOrCreateSparkSession()).size();
+        long indsCnt =   indsEx.getPartyIndustryClassif(getOrCreateSparkSession()).size();
+        long ctznCnt =   ctznExtctr.getAllCitizenshipCountries(getOrCreateSparkSession()).size();
+        //long kyaCnt = kyaPrp.getPartyKyaProperties(getOrCreateSparkSession()).size();
+        //long orgCnt = rltdOrg.getPartyOrg(getOrCreateSparkSession()).size(); //partyMap
+       long partyScreeningInfoCnt =screenExtrctr.getScreeningInfo(getOrCreateSparkSession()).size(); //
+
+        finalCount.append("Party Count: "+partyInfoCnt);
+        finalCount.append(System.getProperty("line.separator")+" Related Party Count: "+rltdPartyCnt);
+        finalCount.append(System.getProperty("line.separator")+" Party Address Count: "+partyAddressCnt);
+        finalCount.append(System.getProperty("line.separator")+" Party Industry Classification Count: "+indsCnt);
+        finalCount.append(System.getProperty("line.separator")+" Party Citizen Count: "+ctznCnt);
+        finalCount.append(System.getProperty("line.separator")+" Party Screening Info Count: "+partyScreeningInfoCnt);
+
+       rtnCnt = " KYC data loaded: "+ finalCount.toString();
+
         return rtnCnt;
     }
 //    @RequestMapping(method=RequestMethod.GET, path = "/kyc/spark/load")
