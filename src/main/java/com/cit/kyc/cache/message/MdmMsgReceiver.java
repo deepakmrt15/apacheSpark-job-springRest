@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.annotation.JmsListener;
 
-import org.springframework.jms.support.converter.MarshallingMessageConverter;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 import javax.xml.transform.stream.StreamSource;
@@ -28,7 +27,7 @@ public class MdmMsgReceiver {
         return latch;
     }
 
-    @JmsListener(destination = "queueName", containerFactory = "jmsListenerContainerFactory")
+   // @JmsListener(destination = "queueName", containerFactory = "jmsListenerContainerFactory")
     public void receive(String message) {
         Jaxb2Marshaller unMarshaller = new Jaxb2Marshaller();
        // LOGGER.info("Mdm Sent:", message);
