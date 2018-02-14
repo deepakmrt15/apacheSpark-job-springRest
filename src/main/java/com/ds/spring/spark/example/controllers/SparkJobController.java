@@ -55,7 +55,7 @@ public class SparkJobController {
 
     private SparkConf getSparkConf() {
         return new SparkConf()
-                .setAppName("KycInfoCacheLoader")
+                .setAppName("SparkCacheLoader")
                 .setMaster(sparkCluster);
     }
 
