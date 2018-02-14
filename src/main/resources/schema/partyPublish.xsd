@@ -13,7 +13,7 @@
 		<xs:sequence>
 			<xs:element name="eventType" type="xs:string"/>
 			<xs:element name="eventDt" type="xs:dateTime"/>
-			<xs:element name="partyId" type="pty:String14_Type">
+			<xs:element name="prty_id" type="pty:String14_Type">
 				<xs:annotation>
 					<xs:documentation>For mergers, this is equivalent to the surviving party ID.  For unmerge, this will be equivalent to the original party ID.</xs:documentation>
 				</xs:annotation>

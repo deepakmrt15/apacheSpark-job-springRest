@@ -1,13 +1,13 @@
 ----------------------------------------------------------------
-Tue Dec 26 15:18:14 PST 2017:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance a816c00e-0160-951e-8963-00000d9ccbd8 
-on database directory memory:C:\dev\kyc-spark-cache\testdb with class loader sun.misc.Launcher$AppClassLoader@5c647e05 
-Loaded from file:/C:/Users/SHARMD01/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.13.1.1/29c42babe5c5463c6eea45487d3cfbfe8348ccd1/derby-10.13.1.1.jar
+Tue Feb 13 14:49:47 PST 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance a816c00e-0161-915c-1755-000021465d18 
+on database directory memory:/Users/spark-spring-rest/testdb with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
+Loaded from file:/Users/deepaksharma/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.13.1.1/29c42babe5c5463c6eea45487d3cfbfe8348ccd1/derby-10.13.1.1.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_131-b11
-user.dir=C:\dev\kyc-spark-cache
-os.name=Windows 7
-os.arch=amd64
-os.version=6.1
+java.runtime.version=1.8.0_144-b01
+user.dir=/Users/spark-spring-rest
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.13.2
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''

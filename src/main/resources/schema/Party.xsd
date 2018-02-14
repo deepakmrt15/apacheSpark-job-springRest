@@ -16,45 +16,45 @@
 					<xs:documentation>Unique Party ID assigned by the Bank's MDM system.  This element is not sent in Add requests.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="partyTypeCd" type="pty:String14Min1_Type" minOccurs="0">
+			<xs:element name="prty_typ_cd" type="pty:String14Min1_Type" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Party Type</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="fullName" type="pty:String1000_Type" minOccurs="0">
+			<xs:element name="full_nm" type="pty:String1000_Type" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Party full name</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="taxIdNum" type="pty:String9_Type" minOccurs="0">
+			<xs:element name="tax_id_num" type="pty:String9_Type" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Tax ID</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="taxIdNumTypeCd" type="pty:String100Min1_Type" minOccurs="0">
+			<xs:element name="tax_id_num_typ_cd" type="pty:String100Min1_Type" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Tax ID Type</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="taxResidenceCountryCd" type="pty:Country_Type" nillable="true" minOccurs="0"/>
-			<xs:element name="firstAcctOpenDt" type="xs:date" nillable="true" minOccurs="0">
+			<xs:element name="tax_resdnc_cntry_cd" type="pty:Country_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="frst_acct_opn_dt" type="xs:date" nillable="true" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Date the customer opened its first account.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="custLifecycleStatCd" type="pty:String100_Type" minOccurs="0">
+			<xs:element name="cust_lcycl_stat_cd" type="pty:String100_Type" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Lifecycle status code assigned by Bank's MDM system</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="privateClientEffDt" type="xs:date" nillable="true" minOccurs="0"/>
-			<xs:element name="consTurnoverAmt" type="xs:decimal" nillable="true" minOccurs="0"/>
-			<xs:element name="datValdnStatCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
-			<xs:element name="cmphId" type="pty:String3_Type" nillable="true" minOccurs="0"/>
-			<xs:element name="lckStatCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
-			<xs:element name="mtchValdnStatCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
-			<xs:element name="rltdPrtyLcyclStatCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
-			<xs:element name="sourceCustomerTypeCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="pvt_clnt_eff_dt" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="cons_tovr_amt" type="xs:decimal" nillable="true" minOccurs="0"/>
+			<xs:element name="dat_valdn_stat_cd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="cmph_ind" type="pty:String3_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="lck_stat_cd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="mtch_valdn_stat_cd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="rltd_prty_lcycl_stat_cd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="src_cust_typ_cd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
 			<xs:element name="segmentInfo" type="pty:ArraySegment_Type" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Segment</xs:documentation>
@@ -84,42 +84,42 @@
 					<xs:documentation>Related accounts</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="firstName" type="pty:String100_Type" nillable="true" minOccurs="0">
+			<xs:element name="frst_nm" type="pty:String100_Type" nillable="true" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Person first name</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="middleName" type="pty:String100_Type" nillable="true" minOccurs="0">
+			<xs:element name="mdl_nm" type="pty:String100_Type" nillable="true" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Person middle name</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="lastName" type="pty:String100_Type" nillable="true" minOccurs="0">
+			<xs:element name="last_nm" type="pty:String100_Type" nillable="true" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Person last name</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="nameSuffix" type="pty:String50_Type" nillable="true" minOccurs="0">
+			<xs:element name="nm_sfx" type="pty:String50_Type" nillable="true" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Name suffix (ex: Jr, III)</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="birthDt" type="xs:date" nillable="true" minOccurs="0">
+			<xs:element name="brth_dt" type="xs:date" nillable="true" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Date of birth</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="gender" type="pty:String1_Type" nillable="true" minOccurs="0">
+			<xs:element name="gndr" type="pty:String1_Type" nillable="true" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Gender.  Valid values are 'M' (Male), 'F" (Female) and 'U' (Unknown)</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="residenceCountryCd" type="pty:Country_Type" nillable="true" minOccurs="0">
+			<xs:element name="resdnc_cntry_cd" type="pty:Country_Type" nillable="true" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Country of residency</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="nonresidentAlienStatus" type="pty:String100_Type" nillable="true" minOccurs="0">
+			<xs:element name="nonrsdnt_alien_stat_cd" type="pty:String100_Type" nillable="true" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Nonresident alien status</xs:documentation>
 				</xs:annotation>
@@ -136,14 +136,14 @@
 					</xs:complexContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="legalName" type="pty:String500_Type" nillable="true" minOccurs="0"/>
-			<xs:element name="legalTypeCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
-			<xs:element name="busActvTpCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
-			<xs:element name="incorpCountryCd" type="pty:Country_Type" nillable="true" minOccurs="0"/>
-			<xs:element name="incorpStateCd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
-			<xs:element name="incorpDt" type="xs:date" nillable="true" minOccurs="0"/>
-			<xs:element name="publicEntityFlag" type="xs:boolean" nillable="true" minOccurs="0"/>
-			<xs:element name="parentPublicEntityFlag" type="xs:boolean" nillable="true" minOccurs="0"/>
+			<xs:element name="lgl_nm" type="pty:String500_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="lgl_typ_cd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="bus_actv_typ_cd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="incrptn_cntry_cd" type="pty:Country_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="incrptn_st_cd" type="pty:String100_Type" nillable="true" minOccurs="0"/>
+			<xs:element name="incrptn_dt" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="pblc_enty_flg" type="xs:boolean" nillable="true" minOccurs="0"/>
+			<xs:element name="prnt_pblc_enty_flg" type="xs:boolean" nillable="true" minOccurs="0"/>
 			<xs:element name="securitiesInfo" type="pty:ArraySecurityInfo_Type" minOccurs="0"/>
 			<xs:element name="dbaNames" type="pty:ArrayDBA_Type" minOccurs="0"/>
 			<xs:element name="industryClassifCodes" type="pty:ArrayIndustryClassification_Type" minOccurs="0"/>
