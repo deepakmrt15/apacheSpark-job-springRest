@@ -36,7 +36,7 @@ public class SparkJobController {
     public String loadDBDataToSpark() {
         String rtnCnt = new String();
         rtnCnt=  sparkDataLoader.loadCSV2DB(getOrCreateSparkSession());
-        //sparkDataLoader.denodoDataLoader(getOrCreateSparkSession());
+       
         return "Data loaded ==>  "+ rtnCnt;
     }
 
